@@ -17,11 +17,12 @@ import {
   Share2,
   CheckCircle2,
   ChevronRight,
+  ChevronLeft,
   Send
 } from 'lucide-react';
 
 // --- CONFIGURATION ---
-const AUDIO_SOURCE = 'https://files.gospelafri1.com/wp-content/uploads/2023/11/Dotti-The-Deity-Forever-Sweet.mp3';
+const AUDIO_SOURCE = 'https://github.com/vinval-291/Caleb-Elizabeth/raw/refs/heads/main/DOTTi_The_Deity_-_Forever_Sweet%5B_48507%5D.mp3';
 const WEDDING_DATE = '2026-05-30T10:00:00'; 
 
 const ShareMenu = ({ color = 'white' }: { color?: string }) => {
@@ -320,6 +321,12 @@ const GallerySection = () => {
   }
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [selectedImage, setSelectedImage] = useState<number | null>(null);
+
+  const openLightbox = (index: number) => setSelectedImage(index);
+  const closeLightbox = () => setSelectedImage(null);
+  const nextImage = () => setSelectedImage((prev) => (prev !== null ? (prev + 1) % images.length : null));
+  const prevImage = () => setSelectedImage((prev) => (prev !== null ? (prev - 1 + images.length) % images.length : null));
 
   return (
     <section id="gallery" className="py-8 bg-white overflow-hidden">
@@ -351,16 +358,23 @@ const GallerySection = () => {
           >
             {mobileSlides.map((slide, slideIdx) => (
               <div key={slideIdx} className="min-w-full grid grid-cols-2 gap-2 p-1">
-                {slide.map((img, imgIdx) => (
-                  <div key={imgIdx} className="aspect-square relative overflow-hidden rounded-lg shadow-sm">
-                    <img 
-                      src={img} 
-                      alt={`Gallery ${slideIdx * 4 + imgIdx}`} 
-                      className="w-full h-full object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-                ))}
+                {slide.map((img, imgIdx) => {
+                  const actualIdx = slideIdx * 4 + imgIdx;
+                  return (
+                    <div 
+                      key={imgIdx} 
+                      onClick={() => openLightbox(actualIdx)}
+                      className="aspect-square relative overflow-hidden rounded-lg shadow-sm cursor-pointer"
+                    >
+                      <img 
+                        src={img} 
+                        alt={`Gallery ${actualIdx}`} 
+                        className="w-full h-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                  );
+                })}
               </div>
             ))}
           </motion.div>
@@ -390,7 +404,8 @@ const GallerySection = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="relative group overflow-hidden rounded-lg shadow-sm"
+              onClick={() => openLightbox(idx)}
+              className="relative group overflow-hidden rounded-lg shadow-sm cursor-pointer mb-4"
             >
               <motion.img 
                 src={img} 
@@ -408,13 +423,71 @@ const GallerySection = () => {
                 <div className="text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                   <Heart className="text-white mx-auto mb-2 fill-white/20" size={24} />
                   <p className="text-white text-[10px] uppercase tracking-widest font-bold mb-4">Eternal Love</p>
-                  <ShareMenu />
+                  <div onClick={(e) => e.stopPropagation()}>
+                    <ShareMenu />
+                  </div>
                 </div>
               </motion.div>
             </motion.div>
           ))}
         </div>
       </div>
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {selectedImage !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-12"
+          >
+            <button 
+              onClick={closeLightbox}
+              className="absolute top-6 right-6 text-white hover:text-wedding-gold transition-colors z-50 p-2 bg-white/10 rounded-full"
+            >
+              <X size={32} />
+            </button>
+
+            <button 
+              onClick={prevImage}
+              className="absolute left-4 md:left-8 text-white hover:text-wedding-gold transition-colors z-50 p-2 bg-white/10 rounded-full"
+            >
+              <ChevronLeft size={32} />
+            </button>
+
+            <button 
+              onClick={nextImage}
+              className="absolute right-4 md:right-8 text-white hover:text-wedding-gold transition-colors z-50 p-2 bg-white/10 rounded-full"
+            >
+              <ChevronRight size={32} />
+            </button>
+
+            <motion.div
+              key={selectedImage}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="relative max-w-full max-h-full flex flex-col items-center"
+            >
+              <img 
+                src={images[selectedImage]} 
+                alt={`Lightbox image ${selectedImage}`} 
+                className="max-w-full max-h-[85vh] object-contain rounded-sm shadow-2xl"
+                referrerPolicy="no-referrer"
+              />
+              <div className="mt-6 flex flex-col items-center">
+                <p className="text-white/60 text-[10px] uppercase tracking-widest mb-4">
+                  Image {selectedImage + 1} of {images.length}
+                </p>
+                <div onClick={(e) => e.stopPropagation()}>
+                  <ShareMenu />
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
