@@ -767,6 +767,9 @@ const Footer = () => {
         <p className="text-[10px] uppercase tracking-[0.3em] text-gray-300">
           Made with Love &bull; Caleb & Elizabeth 2026
         </p>
+        <p className="text-[10px] uppercase tracking-[0.3em] text-gray-400 mt-6 font-light">
+          website is a courtesy of <a href="https://www.linkedin.com/in/kuteyi-oluwaloye-vincent" target="_blank" rel="noopener noreferrer" className="text-wedding-gold hover:underline font-bold transition-all">Kuteyi Vincent</a>
+        </p>
       </div>
     </footer>
   );
@@ -810,7 +813,7 @@ const MusicToggle = () => {
       console.warn("Audio source failed. If using GitHub, ensure it is the RAW link.", e);
       // Optional fallback if the main source fails
       if (audio.src !== AUDIO_SOURCE) return; 
-      audio.src = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'; 
+      audio.src = 'https://github.com/vinval-291/Caleb-Elizabeth/raw/refs/heads/main/DOTTi_The_Deity_-_Forever_Sweet%5B_48507%5D.mp3'; 
       if (isPlaying) audio.play().catch(err => console.error("Fallback failed:", err));
     };
     audio.addEventListener('error', handleError);
