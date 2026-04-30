@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Playfair Display", serif;
+  --font-body: "Inter", sans-serif;
+  --font-accent: "Cormorant Garamond", serif;
+
+  --color-wedding-ivory: #FDFCFB;
+  --color-wedding-gold: #C5A059;
+  --color-wedding-blush: #F7E7E4;
+  --color-wedding-burgundy: #630D16;
+  --color-wedding-sage: #9AB19A;
+  --color-wedding-champagne: #F3E5D8;
+}
+
+@layer base {
+  body {
+    @apply bg-wedding-ivory text-gray-900 font-body;
+  }
+}
+
+.glass-card {
+  @apply bg-white/40 backdrop-blur-md border border-white/20 shadow-xl;
+}
+
+.heading-serif {
+  @apply font-serif tracking-tight;
+}
+
+.text-accent {
+  @apply font-accent italic;
+}
