@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, MouseEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Calendar, 
@@ -18,20 +18,46 @@ import {
   CheckCircle2,
   ChevronRight,
   ChevronLeft,
+  MessageCircle,
   Send
 } from 'lucide-react';
 
 // --- CONFIGURATION ---
 const AUDIO_SOURCE = 'https://github.com/vinval-291/Caleb-Elizabeth/raw/refs/heads/main/DOTTi_The_Deity_-_Forever_Sweet%5B_48507%5D.mp3';
 const WEDDING_DATE = '2026-05-30T10:00:00'; 
+const SHARE_MESSAGE = "Two souls, one path, a lifetime of love. Join us as Caleb and Elizabeth begin their forever. ❤️ #TheCalebs2026";
 
 const ShareMenu = ({ color = 'white' }: { color?: string }) => {
+  const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const encodedMsg = encodeURIComponent(SHARE_MESSAGE);
+  const encodedUrl = encodeURIComponent(shareUrl);
+
   const shareLinks = [
-    { name: 'Instagram', icon: <Instagram size={18} />, href: 'https://instagram.com' },
-    { name: 'Facebook', icon: <Facebook size={18} />, href: 'https://facebook.com' },
-    { name: 'Twitter', icon: <Twitter size={18} />, href: 'https://twitter.com' },
-    { name: 'Tiktok', icon: <Send size={18} />, href: 'https://tiktok.com' },
-    { name: 'Share', icon: <Share2 size={18} />, href: '#' },
+    { 
+      name: 'WhatsApp', 
+      icon: <MessageCircle size={18} />, 
+      href: `https://wa.me/?text=${encodedMsg}%20${encodedUrl}` 
+    },
+    { 
+      name: 'Facebook', 
+      icon: <Facebook size={18} />, 
+      href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}` 
+    },
+    { 
+      name: 'TikTok', 
+      icon: <Send size={18} />, 
+      href: `https://www.tiktok.com/share?url=${encodedUrl}` 
+    },
+    { 
+      name: 'Copy link', 
+      icon: <Share2 size={18} />, 
+      href: '#',
+      onClick: (e: MouseEvent) => {
+        e.preventDefault();
+        navigator.clipboard.writeText(`${SHARE_MESSAGE} ${shareUrl}`);
+        alert('Link copied to clipboard!');
+      }
+    },
   ];
 
   return (
@@ -40,7 +66,8 @@ const ShareMenu = ({ color = 'white' }: { color?: string }) => {
         <motion.a
           key={link.name}
           href={link.href}
-          target="_blank"
+          onClick={link.onClick}
+          target={link.onClick ? '_self' : "_blank"}
           rel="noopener noreferrer"
           whileHover={{ scale: 1.1, y: -2 }}
           className={`p-2 rounded-full border transition-all duration-300 ${
