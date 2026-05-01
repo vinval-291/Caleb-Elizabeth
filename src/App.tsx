@@ -235,38 +235,64 @@ const Hero = () => {
 };
 
 const StorySection = () => {
-  const stories = [
+  const [perspective, setPerspective] = useState<'his' | 'her'>('his');
+
+  const storyChapters = [
     {
       title: "The First Glimpse",
-      text: "It was a crisp autumn afternoon when Caleb first saw Elizabeth across a crowded room. A simple introduction turned into a conversation that lasted until the stars claimed the sky.",
-      image: "https://i.postimg.cc/RZ1Yfvgk/caleb-elizabeth1.jpg"
+      image: "https://i.postimg.cc/RZ1Yfvgk/caleb-elizabeth1.jpg",
+      his: "A few days after returning from NYSC camp, I was still adjusting to the quiet of home. One late evening, I saw her walking along the road, looking beautiful yet completely drained from a long day of classes. I stopped just to check on her, and that was how I said hello. We stood there for a moment as I asked after her well-being; she gave me a tired but genuine smile that I couldn't forget. I asked for her number, she agreed, and we went our separate ways—not knowing that simple roadside meeting was the start of everything.",
+      her: "We first met on a festive day, quite unexpectedly. I had just finished a long day at school and was on my way home when our paths crossed. It was a simple moment we saw each other, exchanged a few words, and he asked for my number. That was all it was at the time… just a brief encounter on the road. But from those occasional check-ins and conversations, something beautiful began to grow."
     },
     {
       title: "The Spark",
-      text: "Our first date at the local jazz club wasn't just about music—it was the harmony of our souls finding their matching rhythm.",
-      image: "https://i.postimg.cc/rwGHWqfH/caleb-elizabeth2.jpg"
+      image: "https://i.postimg.cc/rwGHWqfH/caleb-elizabeth2.jpg",
+      his: "Our first date wasn't at a fancy club; it was much more personal. I prepared a meal for us at home, and we spent the evening eating, talking, and getting lost in a movie. In that quiet, indoor space, away from the rest of the world, we realized the real \"spark\" wasn't the setting—it was us.",
+      her: "Our first real hangout wasn’t anything fancy and that’s what made it so special. Instead of the usual “let me impress you” date at a restaurant or somewhere elaborate, he simply invited me over to his place. I didn’t quite know what to expect. I thought maybe we’d go out later or do something big… but that wasn’t his style. When I arrived, he had already prepared a meal Egusi soup. I can never forget it. Calmly and simply, he asked me, “Will you eat fufu? I made this for you.” It wasn’t fancy at all just two wraps of fufu and a plate of egusi soup. But in that moment, it meant so much more. It was genuine, thoughtful, and real. Of course, as time went on, we had our fair share of beautiful outings and fancy places. But that simple meal my first visit, sitting there eating fufu and egusi remains one of my favorite memories."
     },
     {
       title: "The Proposal",
-      text: "Under the golden hues of a sunset on the Amalfi Coast, Caleb asked the question that would change their lives forever. With tears of joy, Elizabeth said 'Yes'.",
-      image: "https://i.postimg.cc/qvcFnp1m/caleb-elizabeth3.jpg"
+      image: "https://i.postimg.cc/qvcFnp1m/caleb-elizabeth3.jpg",
+      his: "It wasn’t on a distant coast, but in the warmth of an elegant apartment surrounded by those who love us. With the help of her closest friends, I asked the question that would change our lives forever. As she overwhelmed with joy and tears, and with our friends and family cheering us on, she said \"Yes.\" It was a perfect, lovely beginning to our forever.",
+      her: "The proposal was a complete surprise I truly had no idea it was coming. In fact, I wasn’t expecting it at all, not even this year. I had gone out as usual, and when I got back home, I was shocked to see my friends gathered there. I kept wondering, “What are you all doing here?” Then I saw him… my love, standing there, ready to ask the most important question. In that moment, everything else faded away. He asked, “Will you marry me?” And honestly, my answer came so easily “Why not?” Because he is everything I’ve ever wanted in a man and more. It wasn’t anything overly fancy just an intimate moment in our home, surrounded by a few close friends and loved ones. But it was perfect. It was real. It was us."
     }
   ];
 
   return (
-    <section id="story" className="py-8 bg-wedding-ivory overflow-hidden">
+    <section id="story" className="py-12 bg-wedding-ivory overflow-hidden">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="text-center mb-8">
+        <div className="text-center mb-12">
           <span className="text-wedding-gold uppercase tracking-[0.3em] text-xs font-medium block mb-2">Since the beginning</span>
-          <h2 className="heading-serif text-4xl md:text-6xl text-gray-900 mb-4">Our Journey</h2>
-          <p className="max-w-2xl mx-auto text-gray-500 font-light leading-relaxed text-sm">
-            Every love story is beautiful, but ours is our absolute favorite. 
-            Here is a glimpse into the moments that brought us to 'Forever'.
-          </p>
+          <h2 className="heading-serif text-4xl md:text-6xl text-gray-900 mb-6">Our Journey</h2>
+          
+          {/* Perspective Toggle */}
+          <div className="flex justify-center mb-12">
+            <div className="bg-wedding-gold/10 p-1 rounded-full flex gap-1 relative">
+              <motion.div 
+                className="absolute inset-1 bg-wedding-gold rounded-full"
+                initial={false}
+                animate={{ x: perspective === 'his' ? 0 : '100%' }}
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                style={{ width: 'calc(50% - 4px)' }}
+              />
+              <button 
+                onClick={() => setPerspective('his')}
+                className={`relative px-6 py-2 text-xs uppercase tracking-widest font-bold transition-colors duration-300 ${perspective === 'his' ? 'text-white' : 'text-wedding-gold hover:text-wedding-gold/70'}`}
+              >
+                Caleb's Story
+              </button>
+              <button 
+                onClick={() => setPerspective('her')}
+                className={`relative px-6 py-2 text-xs uppercase tracking-widest font-bold transition-colors duration-300 ${perspective === 'her' ? 'text-white' : 'text-wedding-gold hover:text-wedding-gold/70'}`}
+              >
+                Elizabeth's Story
+              </button>
+            </div>
+          </div>
         </div>
 
-        <div className="space-y-16">
-          {stories.map((story, idx) => (
+        <div className="space-y-24">
+          {storyChapters.map((story, idx) => (
             <motion.div 
               key={idx}
               initial={{ opacity: 0, y: 30 }}
@@ -287,12 +313,30 @@ const StorySection = () => {
                 </div>
               </div>
               <div className="w-full md:w-7/12 space-y-4">
-                <span className="text-wedding-gold font-serif italic text-2xl opacity-40">0{idx + 1}</span>
-                <h3 className="heading-serif text-2xl md:text-3xl text-gray-800">{story.title}</h3>
-                <p className="text-gray-600 font-light leading-relaxed text-base">
-                  {story.text}
-                </p>
-                <div className="h-px w-8 bg-wedding-gold" />
+                <span className="text-wedding-gold font-serif italic text-2xl opacity-40">Chapter {idx + 1}</span>
+                <h3 className="heading-serif text-2xl md:text-4xl text-gray-800">{story.title}</h3>
+                
+                <div className="relative min-h-[160px]">
+                  <AnimatePresence mode="wait">
+                    <motion.p 
+                      key={perspective}
+                      initial={{ opacity: 0, x: perspective === 'his' ? -20 : 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: perspective === 'his' ? 20 : -20 }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
+                      className="text-gray-600 font-light leading-relaxed text-base italic md:text-lg"
+                    >
+                      {perspective === 'his' ? story.his : story.her}
+                    </motion.p>
+                  </AnimatePresence>
+                </div>
+
+                <div className="flex items-center gap-4 pt-4">
+                  <div className="h-px w-8 bg-wedding-gold" />
+                  <span className="text-[10px] uppercase tracking-widest text-wedding-gold font-bold">
+                    Perspectives of Love
+                  </span>
+                </div>
               </div>
             </motion.div>
           ))}
@@ -329,10 +373,10 @@ const GallerySection = () => {
   const prevImage = () => setSelectedImage((prev) => (prev !== null ? (prev - 1 + images.length) % images.length : null));
 
   return (
-    <section id="gallery" className="py-8 bg-white overflow-hidden">
+    <section id="gallery" className="py-16 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-8">
-          <h2 className="heading-serif text-4xl md:text-5xl text-gray-900 mb-2">Captured Moments</h2>
+        <div className="text-center mb-12">
+          <h2 className="heading-serif text-4xl md:text-5xl text-gray-900 mb-4">Captured Moments</h2>
           <div className="flex justify-center items-center gap-4">
             <div className="h-px w-8 bg-wedding-gold" />
             <Heart className="text-wedding-gold fill-wedding-gold/20" size={16} />
@@ -340,21 +384,12 @@ const GallerySection = () => {
           </div>
         </div>
 
-        {/* Mobile Carousel - 4 images in one grid per slide */}
-        <div className="block md:hidden relative">
+        {/* Mobile Carousel - Visible only on mobile */}
+        <div className="block md:hidden relative mb-12">
           <motion.div 
             className="flex"
             animate={{ x: `-${currentSlide * 100}%` }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            onDragEnd={(_, info) => {
-              if (info.offset.x < -50 && currentSlide < mobileSlides.length - 1) {
-                setCurrentSlide(currentSlide + 1);
-              } else if (info.offset.x > 50 && currentSlide > 0) {
-                setCurrentSlide(currentSlide - 1);
-              }
-            }}
           >
             {mobileSlides.map((slide, slideIdx) => (
               <div key={slideIdx} className="min-w-full grid grid-cols-2 gap-2 p-1">
@@ -389,30 +424,27 @@ const GallerySection = () => {
               />
             ))}
           </div>
-          <div className="mt-8 flex flex-col items-center">
-            <p className="text-[10px] text-gray-400 uppercase tracking-widest italic mb-4">Share this story</p>
-            <ShareMenu color="gold" />
-          </div>
           <p className="text-center text-[10px] text-gray-400 mt-6 uppercase tracking-widest italic">Swipe to see more</p>
         </div>
 
-        {/* Desktop Grid */}
-        <div className="hidden md:columns-2 lg:columns-4 gap-4 space-y-4">
+        {/* Desktop Grid - Visible on md+ */}
+        <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-6">
           {images.map((img, idx) => (
             <motion.div 
               key={idx}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
               onClick={() => openLightbox(idx)}
-              className="relative group overflow-hidden rounded-lg shadow-sm cursor-pointer mb-4"
+              className="relative group overflow-hidden rounded-lg shadow-md cursor-pointer aspect-square"
             >
               <motion.img 
                 src={img} 
                 alt={`Gallery ${idx}`} 
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.6 }}
-                className="w-full object-cover"
+                className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />
               <motion.div 
@@ -431,7 +463,13 @@ const GallerySection = () => {
             </motion.div>
           ))}
         </div>
+        
+        <div className="mt-12 flex flex-col items-center">
+          <p className="text-[10px] text-gray-400 uppercase tracking-widest italic mb-4">Share our journey</p>
+          <ShareMenu color="gold" />
+        </div>
       </div>
+
 
       {/* Lightbox Modal */}
       <AnimatePresence>
@@ -495,60 +533,118 @@ const GallerySection = () => {
 const DetailsSection = () => {
   const details = [
     {
-      icon: <Clock size={24} className="text-wedding-gold" />,
-      title: "The Ceremony",
-      time: "2:00 PM - 3:30 PM",
-      location: "St. Mary's Grand Cathedral",
-      address: "123 Elegance Lane, Royal District"
+      icon: <Calendar size={24} className="text-wedding-gold" />,
+      title: "Civil Ceremony",
+      date: "Thursday, May 14th, 2026",
+      location: "Marriage Registry, Ikorodu",
+      address: "Lagos State, Nigeria"
     },
     {
-      icon: <Music2 size={24} className="text-wedding-gold" />,
-      title: "The Reception",
-      time: "5:00 PM - 11:30 PM",
-      location: "The Golden Pavilion Estate",
-      address: "456 Celebration Way, Meadowlands"
+      icon: <Heart size={24} className="text-wedding-gold" />,
+      title: "Traditional Wedding",
+      date: "Saturday, May 30th, 2026",
+      time: "12:00 Noon",
+      location: "HI KIDS EVENT HALL",
+      address: "Ebute Ikorodu Road, Lagos",
+      note: "Reception follows immediately at the same venue."
     },
   ];
 
   return (
-    <section id="details" className="py-8 bg-wedding-blush/30">
+    <section id="details" className="py-16 bg-wedding-blush/30">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-8 mb-8">
-          <div className="space-y-6">
-            <h2 className="heading-serif text-4xl md:text-5xl text-gray-900">Where & When</h2>
-            <p className="text-gray-600 font-light leading-relaxed text-base">
-              We can't wait to celebrate this special day with you. 
-              The ceremonies will take place in two of our favorite locations.
+        <div className="grid md:grid-cols-2 gap-12 mb-16">
+          <div className="space-y-8">
+            <div>
+              <span className="text-wedding-gold uppercase tracking-[0.3em] text-xs font-semibold block mb-4">The Celebration</span>
+              <h2 className="heading-serif text-4xl md:text-6xl text-gray-900 mb-6 font-bold leading-tight">Where & When</h2>
+            </div>
+            <p className="text-gray-600 font-light leading-relaxed text-lg">
+              We can’t wait to celebrate these special milestones with you. 
+              Our journey, which began with a simple "hello" on a roadside, leads us to these two joyful days.
             </p>
-            <div className="space-y-3">
-              <div className="flex items-center gap-4 text-gray-800">
-                <Calendar className="text-wedding-gold" size={20} />
-                <span className="font-medium text-sm">Saturday, May 30th, 2026</span>
+            
+            <div className="bg-white p-8 rounded-lg shadow-sm border-l-4 border-wedding-gold">
+              <h4 className="heading-serif text-xl mb-4 text-gray-800">RSVP & Social</h4>
+              <p className="text-gray-600 mb-6 text-sm">Please let us know if you can make it by contacting:</p>
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                <div>
+                  <p className="text-xs uppercase tracking-widest font-bold text-gray-400 mb-1">Hassan</p>
+                  <a href="tel:08020637748" className="text-wedding-gold font-medium hover:underline">08020637748</a>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-widest font-bold text-gray-400 mb-1">Samson</p>
+                  <a href="tel:07063866157" className="text-wedding-gold font-medium hover:underline">07063866157</a>
+                </div>
               </div>
-              <div className="flex items-start gap-4 text-gray-600 text-xs leading-relaxed">
-                <div className="mt-0.5 p-1.5 bg-wedding-gold/10 rounded-full text-wedding-gold">✨</div>
-                <p>Dress Code: Black Tie Optional. We invite you to wear your finest attire in neutral, soft, or floral tones.</p>
+              <div className="pt-6 border-t border-gray-100">
+                <p className="text-xs uppercase tracking-widest font-bold text-gray-400 mb-2">Event Hashtag</p>
+                <p className="text-2xl font-serif text-wedding-burgundy tracking-wide">#TheCalebs2026</p>
               </div>
             </div>
           </div>
           
-          <div className="grid gap-6">
+          <div className="grid gap-8">
             {details.map((detail, idx) => (
-              <div key={idx} className="bg-white p-8 shadow-sm border border-wedding-gold/10 hover:shadow-md transition-shadow">
-                <div className="mb-6">{detail.icon}</div>
-                <h3 className="heading-serif text-2xl mb-2">{detail.title}</h3>
-                <div className="space-y-1 mb-6">
-                  <p className="text-wedding-gold font-medium">{detail.time}</p>
-                  <p className="text-gray-800 font-medium">{detail.location}</p>
-                  <p className="text-gray-500 text-sm">{detail.address}</p>
+              <motion.div 
+                key={idx}
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.2 }}
+                className="bg-white p-8 shadow-md border border-wedding-gold/10 relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                  {detail.icon}
                 </div>
-                <button className="text-xs uppercase tracking-widest text-wedding-gold border-b border-wedding-gold font-medium hover:opacity-70 transition-opacity">
-                  Get Directions
+                <div className="mb-6 bg-wedding-gold/10 w-12 h-12 flex items-center justify-center rounded-full">
+                  {detail.icon}
+                </div>
+                <h3 className="heading-serif text-2xl md:text-3xl mb-4 text-gray-900">{detail.title}</h3>
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3 text-wedding-burgundy font-semibold">
+                    <Calendar size={18} />
+                    <span>{detail.date}</span>
+                  </div>
+                  {detail.time && (
+                    <div className="flex items-center gap-3 text-gray-600">
+                      <Clock size={18} />
+                      <span>{detail.time}</span>
+                    </div>
+                  )}
+                  <div className="flex items-start gap-3 text-gray-800">
+                    <MapPin size={18} className="mt-1 flex-shrink-0" />
+                    <div>
+                      <p className="font-bold">{detail.location}</p>
+                      <p className="text-sm text-gray-500">{detail.address}</p>
+                    </div>
+                  </div>
+                  {detail.note && (
+                    <p className="text-sm font-medium text-wedding-gold mt-2 italic">{detail.note}</p>
+                  )}
+                </div>
+                
+                {detail.title === "Traditional Wedding" && (
+                  <div className="pt-6 border-t border-gray-100 mb-6">
+                    <p className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-3">Color of the Day</p>
+                    <div className="flex flex-wrap gap-2">
+                       {['White', 'Purple', 'Navy Blue', 'Sky Blue'].map((color) => (
+                         <span key={color} className="px-3 py-1 bg-gray-50 border border-gray-100 rounded-full text-[10px] uppercase tracking-wider font-semibold text-gray-600">
+                           {color}
+                         </span>
+                       ))}
+                    </div>
+                  </div>
+                )}
+
+                <button className="text-xs uppercase tracking-widest text-wedding-gold border-b-2 border-wedding-gold font-bold hover:opacity-70 transition-opacity">
+                  Add to Calendar
                 </button>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
+
 
         {/* Map Placeholder */}
         <div className="h-96 w-full rounded-lg overflow-hidden relative shadow-inner border border-wedding-gold/20">
